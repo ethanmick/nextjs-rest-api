@@ -16,3 +16,35 @@ model User {
   password String
   name     String?
 }
+
+model Restaurant {
+  id          Int      @id @default(autoincrement())
+  name        String
+  address     String
+  description String?
+  menus       Menu[]   @relation("RestaurantMenus")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Menu {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  restaurantId Int
+  restaurant   Restaurant @relation("RestaurantMenus", fields: [restaurantId], references: [id])
+  menuItems    MenuItem[] @relation("MenuItems")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model MenuItem {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  menuId      Int
+  menu        Menu     @relation("MenuItems", fields: [menuId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
